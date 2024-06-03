@@ -1,7 +1,5 @@
 <template>
-  <div class="about">
-    <h1>CART</h1>
-  </div>
+    <CartApp/>
 </template>
 
 <style>
@@ -13,3 +11,6 @@
   }
 }
 </style>
+<script setup lang="ts">
+import CartApp from "@/components/cart/CartApp.vue";
+</script>

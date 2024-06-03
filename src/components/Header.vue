@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {useCartStore} from "@/stores/cart";
+import {storeToRefs} from "pinia";
 
 const cartStore = useCartStore();
-const {getCount} = cartStore;
+const {cartCount} = storeToRefs(cartStore);
 </script>
 
 <template>
@@ -25,10 +26,10 @@ const {getCount} = cartStore;
         <div
           :class="$style.cartIcon"
         >
-          <router-link to="/cart" style="display: block">
+          <router-link to="/cart">
             <v-badge
-                v-if="getCount()"
-                :content="getCount()"
+                v-if="cartCount"
+                :content="cartCount"
             >
               <v-icon
                   icon="mdi-cart-outline"

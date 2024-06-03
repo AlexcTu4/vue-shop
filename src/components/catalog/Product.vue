@@ -31,7 +31,7 @@ const { add, isInCart } = cartStore;
               <v-img
                   class="mx-auto"
                   height="100"
-                  max-width="100"
+                  max-width="auto"
                   src="/catalog/empty.webp"
               ></v-img>
             </template>
