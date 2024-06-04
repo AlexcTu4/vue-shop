@@ -4,7 +4,7 @@ import {storeToRefs} from "pinia";
 import {useProductsListStore} from "@/stores/productsList";
 
 const storeFilter = useFilterStore();
-const {categoriesData, filterData, v$} = storeToRefs(storeFilter);
+const {categoriesData, filterData, v$, loading} = storeToRefs(storeFilter);
 const {reset, apply} = storeFilter;
 
 
@@ -71,12 +71,14 @@ const storeProductsList = useProductsListStore();
             <v-btn
                 color="secondary"
                 @click="reset()"
+                :loading="loading"
             >
               Сброс
             </v-btn>
             <v-btn
                 color="primary"
                 @click="apply()"
+                :loading="loading"
             >
               Применить
             </v-btn>

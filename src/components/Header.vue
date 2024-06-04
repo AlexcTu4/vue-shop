@@ -16,29 +16,26 @@ const {cartCount} = storeToRefs(cartStore);
         <router-link to="/">
           <v-img
               width="100px"
-              src="/images/logo.jpg"
+              src="/vue-shop/images/logo.jpg"
               alt="Логотип"
           ></v-img>
         </router-link>
       </template>
-      <v-app-bar-title>Стичленд</v-app-bar-title>
       <template v-slot:append>
         <div
           :class="$style.cartIcon"
         >
           <router-link to="/cart">
             <v-badge
-                v-if="cartCount"
                 :content="cartCount"
+                :model-value="cartCount > 0"
+                class="text-none"
             >
               <v-icon
                   icon="mdi-cart-outline"
               ></v-icon>
             </v-badge>
-            <v-icon
-                v-else
-                icon="mdi-cart-outline"
-            ></v-icon>
+
           </router-link>
 
         </div>

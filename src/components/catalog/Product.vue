@@ -1,18 +1,34 @@
 <script setup lang="ts">
 import {useCartStore} from "@/stores/cart";
 import type {IProduct} from "@/types/product";
+import {ref} from 'vue'
+
 
 const props = defineProps(['product'])
 const product: IProduct = props.product;
 
 const cartStore = useCartStore();
-const { add, isInCart } = cartStore;
+const {add, isInCart} = cartStore;
+
+const loading = ref(false);
+
+function add2Cart(product: IProduct) {
+  loading.value = true;
+  add(product, 1)
+      .then(() => {
+        loading.value = false;
+      })
+      .catch((error) => {
+        loading.value = false;
+        alert(error);
+      });
+}
 </script>
 
 <template>
   <div
       :class="$style.productWrapper"
-       class="pa-3"
+      class="pa-3"
   >
     <v-card :class="$style.product">
       <div
@@ -53,16 +69,16 @@ const { add, isInCart } = cartStore;
             :class="$style.productBtn"
             variant="outlined"
             color="primary"
-            @click="add(product, 1)"
         >
           В корзине
         </v-btn>
         <v-btn
             v-else
+            :loading="loading"
             :class="$style.productBtn"
             variant="outlined"
             color="secondary"
-            @click="add(product, 1)"
+            @click="add2Cart(product)"
         >
           В корзину
         </v-btn>
@@ -72,13 +88,13 @@ const { add, isInCart } = cartStore;
   </div>
 
 
-
 </template>
 
 <style module lang="scss">
 .productWrapper {
   width: calc(33.333% - 16px);
   text-align: center;
+
   .product {
     padding: 10px;
     height: 100%;

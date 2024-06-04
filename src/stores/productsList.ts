@@ -6,9 +6,8 @@ export const useProductsListStore = defineStore('productsList', () => {
     const products = ref();
     const categoryName: Ref<string> = ref('Все категории')
 
-    function getProductsData(category = 'Все категории', minPrice, maxPrice) {
-        console.log(category, minPrice, maxPrice)
-        fetch(`${import.meta.env.VITE_BASE_API_URL}products/${category === 'Все категории' ? '' : `category/${category}`}`)
+    async function getProductsData(category = 'Все категории', minPrice, maxPrice) {
+        await fetch(`${import.meta.env.VITE_BASE_API_URL}products/${category === 'Все категории' ? '' : `category/${category}`}`)
             .then(response => response.json())
             .then(data => {
                 let minPriceCatalog;

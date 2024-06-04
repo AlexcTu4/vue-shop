@@ -15,9 +15,25 @@ export const useFilterStore = defineStore('filter', () => {
         userInputMinPrice: false,
         userInputMaxPrice: false,
     };
+    /**
+     * данные для фильра по категориям
+     */
     const categoriesData: Ref<string[]> = ref(['Все категории']);
+
+    /**
+     * выбранные фильтры
+     */
     const filterData: Ref<IFilter> = ref(Object.assign({}, defaultFilter));
+    /**
+     * выбранная мин цена
+     */
     const filterMinValue = computed<number>(() => filterData.value.minPrice);
+
+    /**
+     * флаг загрузки
+     */
+    const loading = ref(false);
+
     const storeProductsList = useProductsListStore();
     const {getProductsData} = storeProductsList;
 
@@ -50,20 +66,25 @@ export const useFilterStore = defineStore('filter', () => {
     }
 
 
-    function reset() {
+    async function reset() {
+        loading.value = true;
         filterData.value = Object.assign({}, defaultFilter);
-        getProductsData();
+        await getProductsData();
+        loading.value = false;
+
     }
 
     function apply() {
-        v$.value.$validate().then(() => {
+        v$.value.$validate().then(async () => {
             if (!v$.value.$error) {
-                getProductsData(filterData.value.category, filterData.value.userInputMinPrice ? filterData.value.minPrice : undefined, filterData.value.userInputMaxPrice ? filterData.value.maxPrice : undefined);
+                loading.value = true;
+                await getProductsData(filterData.value.category, filterData.value.userInputMinPrice ? filterData.value.minPrice : undefined, filterData.value.userInputMaxPrice ? filterData.value.maxPrice : undefined);
+                loading.value = false;
             }
         });
     }
 
 
     getCategoryData();
-    return {categoriesData, filterData, v$, reset, setMaxPrice, setMinPrice, apply,}
+    return {categoriesData, filterData, v$,loading, reset, setMaxPrice, setMinPrice, apply,}
 })

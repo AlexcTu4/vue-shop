@@ -12,7 +12,7 @@ const columns = [
     align: 'center',
     sortable: false,
     width: '10%',
-    key: 'id',
+    key: 'index',
   },
   {
     title: 'Наименование товара',

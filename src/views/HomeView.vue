@@ -1,6 +1,17 @@
 <script setup lang="ts">
 import SideBar from "@/components/catalog/SideBar.vue";
 import ProductsList from "@/components/catalog/ProductsList.vue";
+import {useHead} from "@unhead/vue";
+
+useHead({
+  title: 'Стичленд',
+  meta: [
+    {
+      name: 'description',
+      content: 'Самый лучший магазин детских товаров "Стичленд"'
+    }
+  ]
+})
 </script>
 
 <template>

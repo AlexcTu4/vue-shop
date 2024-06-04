@@ -11,40 +11,53 @@ export const useCartStore = defineStore('cart', () => {
     const cartProductMap: Ref<Map<ICartProduct>> = ref(new Map(Object.entries(cartFromLocalStorage || {})));
     const cartProducts = computed<ICartProduct[]>(() => {
         const obj = Object.fromEntries(cartProductMap.value);
-        return Object.keys(obj).map((key) => {
-            return {...obj[key],totalPrice: parseFloat((obj[key].price * obj[key].qty).toFixed(2))}
+        return Object.keys(obj).map((key, index) => {
+            return {
+                ...obj[key],
+                totalPrice: parseFloat((obj[key].price * obj[key].qty).toFixed(2)),
+                index: index + 1
+            }
         })
         }
     );
     const cartCount = computed(() => cartProductMap.value.size);
     const cartTotalPrice = computed(() => {
         return  cartProducts.value.reduce((summ, item)=> {
-            console.log(summ, item.totalPrice);
             return  parseFloat((summ + item.totalPrice).toFixed(2))
         }, 0)
     });
 
 
     function add(product: IProduct, qty: number) {
-        // const item = cartProducts.value.find((item)=> item.id === product.id);
-        const item = cartProductMap.value.get(product.id);
+        return new Promise((resolve, reject)=>{
+            // Тут должен быть запрос на сервер на добавление товара. Сделал вероятность ошибки ответа от сервера
+            setTimeout(()=>{
+                if(Math.floor(Math.random() * 5)){
+                    const item = cartProductMap.value.get(product.id + '');
 
-        if (item) {
-            item.qty++;
-        } else {
-            // cartProducts.value.push({...product, qty: 1});
-            cartProductMap.value.set(product.id, {...product, qty: 1});
-        }
-        localStorage.setItem('cart', JSON.stringify(Object.fromEntries(cartProductMap.value)))
+                    if (item) {
+                        item.qty++;
+                    } else {
+                        cartProductMap.value.set(product.id + '', {...product, qty: 1});
+                    }
+                    localStorage.setItem('cart', JSON.stringify(Object.fromEntries(cartProductMap.value)))
+                    resolve(true);
+                }
+                else{
+                    reject('Ошибка добавления товара в корзину');
+                }
+            }, 500)
+        })
+
+
     }
 
     function remove(product: IProduct, qty: number) {
-        // const item = cartProducts.value.find((item)=> item.id === product.id);
-        const item = cartProductMap.value.get(product.id);
+        const item = cartProductMap.value.get(product.id + '');
 
         if (item) {
             if (item.qty === 1) {
-                cartProductMap.value.delete(product.id);
+                cartProductMap.value.delete(product.id + '');
             } else {
                 item.qty--;
             }
@@ -56,21 +69,18 @@ export const useCartStore = defineStore('cart', () => {
 
     function setQty(product: ICartProduct){
 
-        // const item = cartProducts.value.find((item)=> item.id === product.id);
-        const item = cartProductMap.value.get(product.id);
         if(product.qty === 0){
-
+            cartProductMap.value.delete(product.id + '')
         }
         else{
-            cartProductMap.value.set(product.id, {...product, qty: product.qty});
+            cartProductMap.value.set(product.id + '', {...product, qty: product.qty});
         }
-
 
         localStorage.setItem('cart', JSON.stringify(Object.fromEntries(cartProductMap.value)))
     }
 
     function isInCart(product: IProduct) {
-        return !!cartProductMap.value.get(product.id);
+        return !!cartProductMap.value.get(product.id + '');
     }
 
     function getCount() {
@@ -79,9 +89,9 @@ export const useCartStore = defineStore('cart', () => {
 
     async function order(){
         return  new Promise((resolve, reject)=>{
-            // Тут должен быть запрос на сервер на создание заказа
+            // Тут должен быть запрос на сервер на создание заказа. Сделал вероятность ошибки ответа от сервера
             setTimeout(()=>{
-                if(Math.floor(Math.random() * 2)){
+                if(Math.floor(Math.random() * 3)){
                     resolve(true);
                 }
                 else{
@@ -100,5 +110,5 @@ export const useCartStore = defineStore('cart', () => {
 
 
 
-    return {cartProducts, cartCount, cartTotalPrice,  add, setQty, isInCart, order, clearCart}
+    return {cartProducts, cartCount, cartTotalPrice, cartProductMap,  add, setQty, isInCart, order, clearCart}
 })

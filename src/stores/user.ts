@@ -10,6 +10,7 @@ export const useUserStore = defineStore('user', () => {
     const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
     if(userFromLocalStorage && userFromLocalStorage.timeStamp && (new Date().getTime() - userFromLocalStorage.timeStamp) >  TTL_MS){
         userFromLocalStorage.isAuthorized = false;
+        userFromLocalStorage.error = '';
         localStorage.setItem('user', JSON.stringify(userFromLocalStorage));
     }
     const user: Ref<IUser> = ref(userFromLocalStorage || {});

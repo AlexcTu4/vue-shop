@@ -2,13 +2,26 @@
 import {ref} from 'vue'
 import {useUserStore} from "@/stores/user";
 import errorToText from "@/utils/ErrorToText";
-
+import {storeToRefs} from "pinia";
+import { useHead } from '@unhead/vue'
 
 let valid = ref();
 let visible = ref(false);
 
 const userStore = useUserStore();
-const {user, v$, auth} = userStore;
+const {user, v$} = storeToRefs(userStore);
+const {auth} = userStore;
+
+useHead({
+  title: 'Авторизация',
+  meta: [
+    {
+      name: 'description',
+      content: 'Регистрация или авторизация'
+    }
+  ]
+})
+
 
 </script>
 
@@ -50,7 +63,7 @@ const {user, v$, auth} = userStore;
       <v-card-actions>
         <v-spacer></v-spacer>
         <div
-            v-if="user.error"
+            v-if="v$.$anyDirty && user.error"
             class="text-red"
         >
           {{ user.error }}
