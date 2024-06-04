@@ -32,7 +32,7 @@ export const useCartStore = defineStore('cart', () => {
         return new Promise((resolve, reject)=>{
             // Тут должен быть запрос на сервер на добавление товара. Сделал вероятность ошибки ответа от сервера
             setTimeout(()=>{
-                if(Math.floor(Math.random() * 5)){
+                if(getRandomBool()){
                     const item = cartProductMap.value.get(product.id + '');
 
                     if (item) {
@@ -52,21 +52,6 @@ export const useCartStore = defineStore('cart', () => {
 
     }
 
-    function remove(product: IProduct, qty: number) {
-        const item = cartProductMap.value.get(product.id + '');
-
-        if (item) {
-            if (item.qty === 1) {
-                cartProductMap.value.delete(product.id + '');
-            } else {
-                item.qty--;
-            }
-            localStorage.setItem('cart', JSON.stringify(Object.fromEntries(cartProductMap.value)))
-        } else {
-            new Exception(`${product.title} отсутствует в корзине`)
-        }
-    }
-
     function setQty(product: ICartProduct){
 
         if(product.qty === 0){
@@ -83,15 +68,11 @@ export const useCartStore = defineStore('cart', () => {
         return !!cartProductMap.value.get(product.id + '');
     }
 
-    function getCount() {
-        return cartProductMap.value.size;
-    }
-
     async function order(){
         return  new Promise((resolve, reject)=>{
             // Тут должен быть запрос на сервер на создание заказа. Сделал вероятность ошибки ответа от сервера
             setTimeout(()=>{
-                if(Math.floor(Math.random() * 3)){
+                if(getRandomBool()){
                     resolve(true);
                 }
                 else{
@@ -106,6 +87,10 @@ export const useCartStore = defineStore('cart', () => {
     function clearCart(){
         cartProductMap.value.clear();
         localStorage.setItem('cart', JSON.stringify(Object.fromEntries(cartProductMap.value)))
+    }
+
+    function getRandomBool(){
+        return !!(Math.floor(Math.random() * 5));
     }
 
 

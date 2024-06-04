@@ -16,7 +16,7 @@ const {cartCount} = storeToRefs(cartStore);
         <router-link to="/">
           <v-img
               width="100px"
-              src="/vue-shop/images/logo.jpg"
+              src="/images/logo.jpg"
               alt="Логотип"
           ></v-img>
         </router-link>
