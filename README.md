@@ -8,6 +8,8 @@ This template should help get you started developing with Vue 3 in Vite.
 
 ## Описание
 Демонстрационный проект интернет магазина
+
+### Ссылка на проект https://ctu4land-5cd8ed264fed.herokuapp.com/
 ### Логин test@test.ru
 ### Пароль test
 Авторизация локально (без API)  
