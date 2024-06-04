@@ -8,9 +8,9 @@ This template should help get you started developing with Vue 3 in Vite.
 
 ## Описание
 Демонстрационный проект интернет магазина
-Логин test@test.ru
-Пароль test
-Авторизация локально (без API)
+### Логин test@test.ru
+### Пароль test
+Авторизация локально (без API)  
 Работа с корзиной локально для более удобного использования.
 
 Данные по товарам и категориям обращаются к API https://fakestoreapi.com/
